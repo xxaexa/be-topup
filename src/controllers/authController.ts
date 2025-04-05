@@ -29,30 +29,30 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-  const accessToken = generateAccessToken(user._id.toString());
-  const refreshToken = generateRefreshToken(user._id.toString());
+    const accessToken = generateAccessToken(user._id.toString());
+    const refreshToken = generateRefreshToken(user._id.toString());
 
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    maxAge: 15 * 60 * 1000,
-  });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
 
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-  res.json({ message: "Login success", user: { name: user.name, email: user.email } });
+    return res.json({
+      message: "Login success",
+      user: { name: user.name, email: user.email },
+      accessToken
+    });
   } catch (error) {
     return res.status(500).json(errorResponse("Failed to login", error));
   }
 };
+
 
 // refresh
 export const refreshToken = async (req: Request, res: Response) => {

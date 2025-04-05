@@ -15,13 +15,21 @@ export const getVouchers = async (_req: Request, res: Response) => {
 // Get one voucher
 export const getVoucherById = async (req: Request, res: Response) => {
   try {
-    const voucher = await Voucher.findOne({ id: req.params.id });
-    if (!voucher) return res.status(404).json(errorResponse("Voucher not found"));
+    const voucher = await Voucher.find({ name: req.params.id }); 
+    console.log(req.params.id)
+    const list = await Voucher.find();
+    console.log("Semua nama voucher:");
+    list.forEach(v => console.log(v.name));
+    
+    if (!voucher) {
+      return res.status(404).json(errorResponse("Voucher not found"));
+    }
     res.status(200).json(successResponse("Fetched voucher", voucher));
   } catch (error) {
     res.status(500).json(errorResponse("Failed to fetch voucher", error));
   }
 };
+
 
 // Create voucher
 export const createVoucher = async (req: Request, res: Response) => {
