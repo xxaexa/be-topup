@@ -3,13 +3,14 @@ import mongoose, { Document, Schema } from "mongoose";
 const inputSchema = new mongoose.Schema({
   label: { type: String, required: true },
   name: { type: String, required: true },
+  value:{ type: String, required: true },
 });
 
 const variantSchema = new mongoose.Schema({
   id: { type: String, required: true },
   label: { type: String, required: true },
   icon: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Number, required: true },  
   type: { type: String, enum: ["normal", "package"], required: true },
 });
 

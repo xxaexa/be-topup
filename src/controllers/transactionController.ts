@@ -72,6 +72,7 @@ export const getTransactions = async (req: Request, res: Response) => {
 export const getTransactionById = async (req: Request, res: Response) => {
   try {
     const transaction = await Transaction.findById(req.params.id);
+    console.log(transaction)
     if (!transaction) {
       return res.status(404).json(errorResponse("Transaction not found"));
     }
