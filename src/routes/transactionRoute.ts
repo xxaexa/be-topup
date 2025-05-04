@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/", createTransaction);
 router.get("/", getTransactions);
 router.get("/:id", getTransactionById);
-router.patch("/:id", updateTransactionStatus);
+router.put("/:id", updateTransactionStatus);
 router.delete("/:id", deleteTransaction);
 
 export default router;

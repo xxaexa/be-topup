@@ -1,26 +1,23 @@
-import mongoose from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const inputSchema = new mongoose.Schema({
+const InputFieldSchema = new Schema({
+  field_name: { type: String, required: true },
   label: { type: String, required: true },
+  required: { type: Boolean, default: true },
+}, { _id: false });
+
+const VariantSchema = new Schema({
   name: { type: String, required: true },
-});
-
-const variantSchema = new mongoose.Schema({
-  id: { type: String, required: true },
-  label: { type: String, required: true },
-  icon: { type: String, required: true },
   price: { type: Number, required: true },
-  type: { type: String, enum: ["normal", "package"], required: true },
-});
+}, { _id: false });
 
-const voucherSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  image: { type: String, required: true },
+const VoucherSchema = new Schema({
+  game_name: { type: String, required: true },
+  voucher_name: { type: String, required: true },
+  image_url: { type: String },
   description: { type: String },
-  inputs: [inputSchema],
-  variants: [variantSchema],
-});
+  input_fields: [InputFieldSchema],
+  variants: [VariantSchema],
+}, { timestamps: true });
 
-const Voucher = mongoose.model("Voucher", voucherSchema);
-
-export default Voucher;
+export const Voucher = models.Voucher || model("Voucher", VoucherSchema);

@@ -6,6 +6,7 @@ import { connectDB } from "./config/db";
 import authRoutes from "./routes/authRoute";
 import voucherRoute from "./routes/voucherRoute";
 import transactionRoute from "./routes/transactionRoute"
+import summaryRoute from './routes/summaryRoute'
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/voucher", voucherRoute);
 app.use("/api/transaction",transactionRoute)
+app.use("/api/summary",summaryRoute)
 
 
 

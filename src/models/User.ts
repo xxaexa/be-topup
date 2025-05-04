@@ -1,29 +1,25 @@
-import mongoose, { Schema, model,  } from "mongoose";
-import { IUser } from "../types";
+import { Schema, model, models } from "mongoose";
 
-const userSchema = new Schema<IUser>(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-    },
+const UserSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3,
+    maxlength: 30,
   },
-  {
-    timestamps: true,
-  }
-);
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    match: [/.+\@.+\..+/, "Invalid email format"],
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+  },
+}, { timestamps: true });
 
-const User = model<IUser>("User", userSchema);
-export default User;
+export const User = models.User || model("User", UserSchema);
